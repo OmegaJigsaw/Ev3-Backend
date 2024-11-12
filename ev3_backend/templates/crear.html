@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Inicio{% endblock title %}
+{% block content %}
+
+    <form method="post">
+        {{ form.as_p }}
+        {% csrf_token %}
+        {% comment %} Cambiar el texto Guardar por Actualizar si viene por actualizar {% endcomment %}
+        <button type="submit" class="btn btn-primary">
+            {% if form.nombre.value %}
+            Actualizar
+            {% else %}
+            Guardar
+            {% endif %}
+        </button>
+    </form>
+
+{% endblock content %}

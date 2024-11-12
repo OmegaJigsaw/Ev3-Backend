@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}Inicio{% endblock title %}
+{% block content %}
+
+<h1>Ta funcionando el Admin Dashboard 👍</h1>
+
+<a href="{% url 'crear-categoria' %}" class="btn btn-success">Gestionar Categorias</a>
+<a href="{% url 'login' %}" class="btn btn-success">Gestionar Productos</a>
+
+{% endblock content %}
