@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Categorias{% endblock title %}
+
+{% block content %}
+<div class="navbar navbar-expand-xl bg-dark w-100">
+    <a href="{% url 'admin-dashboard' %}" class="navbar-brand">
+        <img src="{% static 'images/icon/logo.png' %}" style="width: 100px" />
+    </a>
+</div>
+
+<div class="row">
+    <h4 class="h4" style="border-bottom: solid;">Categorías</h4>
+    <div class="table-responsive mt-3">
+        <div class="row">
+            <div class="col text-start">
+                <a href="{% url 'productos' %}" class="btn btn-primary mx-auto">Volver</a>                         
+            </div>
+        </div>
+        <div class="row mt-3">
+            <h5>Agregar Categoría</h5>
+            <!-- MODIFICAR PARA HACERLO POSIBLE EL EDIT CON EL MISMO FORMULARIO -->
+            <form method="POST" action="#">
+                {% csrf_token %}
+                <div class="col-5">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" maxlength="50">
+                    {% if errores.name_empty %}
+                    <span class="text-danger">{{ errores.name_empty }}</span>
+                    {% elif errores.name_max_char %}
+                    <span class="text-danger">{{ errores.name_max_char }}</span>
+                    {% endif %}
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Añadir</button>
+            </form>
+        </div>
+        <table class="table table-hover mt-3">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Disponibilidad</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                {% if categorias %}
+                {% for i in categorias %}
+                <tr>
+                    <td>{{ i.nombre }}</td>
+                    <td>{% if i.disponible %}Disponible{% else %}No Disponible{% endif %}</td>
+                    <td>
+                        <a href="#" class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <a href="#" class="btn btn-danger"><i class="fa-solid fa-trash"></i></a>
+                    </td> 
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="3" class="text-center">No hay categorías disponibles.</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>    
+{% endblock %}

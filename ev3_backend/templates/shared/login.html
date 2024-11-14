@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Login{% endblock title %}
+{% block content %}
+
+<div class="navbar navbar-expand-xl bg-dark w-100">
+    <a href="{% url 'inicio' %}" class="navbar-brand">
+        <img src="{% static 'images/icon/logo.png' %}" style="width: 100px" />
+    </a>
+</div>
+
+<div class="container d-flex align-items-center justify-content-center" style="height: 70vh;">
+    <div class="card p-4 shadow" style="max-width: 32rem; width: 100%;">
+        <form method="POST">
+            {% csrf_token %}
+            <h1 class="card-title text-center">Inicio de Sesión</h1>
+
+            {{ form.non_field_errors }}
+
+            <div class="form-group mt-3">
+                <label for="{{ form.username.id_for_label }}" class="form-label">Nombre de Usuario</label>
+                <div class="input-group">
+                    {{ form.username }}
+                </div>
+            </div>
+
+            <div class="form-group mt-2">
+                <label for="{{ form.password.id_for_label }}" class="form-label">Contraseña</label>
+                {{ form.password }}
+            </div>
+
+            <button type="submit" class="btn btn-secondary w-100 mt-3">LogIn</button>
+        </form>
+        <!-- Enlace para registrarse -->
+        <p class="text-center mt-3">¿No tienes cuenta? <a href="#">Regístrate aquí</a></p>
+    </div>
+</div>
+
+
+{% endblock content %}

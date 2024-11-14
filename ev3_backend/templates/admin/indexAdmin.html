@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Administrador{% endblock title %}
+
+
+{% block content %}
+<div class="navbar navbar-expand-xl bg-dark w-100">
+    <a href="{% url 'inicio' %}" class="navbar-brand">
+        <img src="{% static 'images/icon/logo.png' %}" style="width: 100px" />
+    </a>
+</div>
+
+<div class="container mt-4">
+    <h1 class="text-center">Bienvenido al Panel de Administración</h1>
+    <div class="row mt-5">
+        <div class="col-md-4 mb-4">
+            <div class="card text-center shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Productos</h5>
+                    <p class="card-text">Gestion de Productos.</p>
+                    <a href="{% url 'productos' %}" class="btn btn-primary">Ir a Productos</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card text-center shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Categorias</h5>
+                    <p class="card-text">Categorias de Productos.</p>
+                    <a href="{% url 'categorias' %}" class="btn btn-primary">Ir a Categorias</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card text-center shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Ventas</h5>
+                    <p class="card-text">Historial de Ventas.</p>
+                    <a href="{% url 'ventas' %}" class="btn btn-primary">Ir a Ventas</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

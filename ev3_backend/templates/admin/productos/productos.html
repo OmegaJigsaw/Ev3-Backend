@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Productos{% endblock title %}
+
+{% block content %}
+<div class="navbar navbar-expand-xl bg-dark w-100">
+    <a href="{% url 'inicio' %}" class="navbar-brand">
+        <img src="{% static 'images/icon/logo.png' %}" style="width: 100px" />
+    </a>
+</div>
+
+<div class="row mt-3">
+    <h4 class="h4" style="border-bottom: solid;">Productos</h4>
+    <div class="table-responsive mt-3">
+        <div class="row mb-3">
+            <div class="col text-start">
+                <a href="{% url 'admin-dashboard' %}" class="btn btn-primary mx-auto">Volver</a>
+                <a href="{% url 'categorias' %}" class="btn btn-primary">Categorías</a>
+            </div>
+            {% if productos %}
+            <div class="col text-end">
+                <a href="#" class="btn btn-primary">+</a>
+            </div>
+            {% endif %}
+        </div>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Imagen</th>
+                    <th>Nombre</th>
+                    <th>Categoría</th>
+                    <th>Stock</th>
+                    <th>Precio Unitario</th>
+                    <th>Disponibilidad</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                {% if productos %}
+                    {% for i in productos %}
+                    <tr>
+                        <td>
+                            {% if i.imagen %}
+                                <img src="{{ i.imagen.url }}" alt="Imagen Producto" class="img-fluid" style="max-height: 100px;">
+                            {% else %}
+                                <span class="text-danger">No hay imagen del Producto</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ i.nombre }}</td>
+                        <td>{{ i.categoria.nombre }}</td>
+                        <td>{{ i.stock }}</td>
+                        <td>{{ i.precio_unitario }}</td>
+                        <td>{% if i.disponible %}Disponible{% else %}No Disponible{% endif %}</td>
+                        <td>
+                            <a href="#" class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i></a>
+                            <a href="#" class="{% if i.disponible %}btn btn-danger{% else %}btn btn-success{% endif %}">
+                                <i class="fa-solid fa-store-slash"></i>
+                            </a>
+                        </td> 
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr id="emptyRow">
+                        <td colspan="9" class="text-center">
+                            <a href="#" class="btn btn-primary">+</a>
+                        </td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>    
+
+{% endblock %}

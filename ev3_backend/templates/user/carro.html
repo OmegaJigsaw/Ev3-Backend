@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Carrito{% endblock title %}
+
+
+{% block content %}
+<div class="navbar navbar-expand-xl bg-dark w-100">
+    <a href="{% url 'inicio' %}" class="navbar-brand">
+        <img src="{% static 'images/icon/logo.png' %}" style="width: 100px" />
+    </a>
+</div>
+
+<!-- EJEMPLO VISTA CARRO -->
+<!-- FALTA TODA LA LOGICA DE VISUALIZACION REAL -->
+<div class="row d-flex flex-wrap py-5">
+    <!-- Lista de productos -->
+    <div class="col-12 col-md-8 mb-4">
+        <!-- Producto 1 -->
+        <div class="card p-3 mb-3">
+            <div class="row">
+                <div class="col-md-3 py-5">
+                    <img src="{% static 'images/carousel/ropa.jpg' %}" alt="Producto 1" class="img-fluid">
+                </div>
+                <div class="col-md-9">
+                    <div class="card-body">
+                        <h5 class="card-title">Producto 1</h5>
+                        <p class="card-text">Descripción del Producto 1</p>
+                        
+                        <div class="d-flex justify-content-start align-items-center">
+                            <button class="btn btn-outline-secondary me-2">-</button>
+                            <input type="text" value="1" class="form-control w-auto me-2">
+                            <button class="btn btn-outline-secondary">+</button>
+                        </div>
+                        
+                        <p class="mt-2">
+                            <span class="text-decoration-line-through text-muted">$1000</span>
+                            <span class="ms-2 text-success">$800</span>
+                        </p>
+                        <p class="text-muted">Pago con transferencias</p>
+                        <p class="price">$800 <small class="text-muted">Otros medios de pago</small></p>
+                        <a href="#" class="btn btn-danger mt-2">Eliminar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Producto 2 -->
+        <div class="card p-3">
+            <div class="row">
+                <div class="col-md-3 py-5">
+                    <img src="{% static 'images/carousel/juguetes.jpg' %}" alt="Producto 2" class="img-fluid">
+                </div>
+                <div class="col-md-9">
+                    <div class="card-body">
+                        <h5 class="card-title">Producto 2</h5>
+                        <p class="card-text">Descripción del Producto 2</p>
+                        
+                        <div class="d-flex justify-content-start align-items-center">
+                            <button class="btn btn-outline-secondary me-2">-</button>
+                            <input type="text" value="2" class="form-control w-auto me-2">
+                            <button class="btn btn-outline-secondary">+</button>
+                        </div>
+                        
+                        <p class="mt-2">
+                            <span class="text-decoration-line-through text-muted">$1200</span>
+                            <span class="ms-2 text-success">$1000</span>
+                        </p>
+                        <p class="text-muted">Pago con transferencias</p>
+                        <p class="price">$2000 <small class="text-muted">Otros medios de pago</small></p>
+                        <a href="#" class="btn btn-danger mt-2">Eliminar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resumen y botón de pago -->
+    <div class="col-12 col-md-4 d-flex flex-column py-5">
+        <div class="card p-3">
+            <h4>Resumen (2 productos)</h4>
+            <div class="d-flex justify-content-between">
+                <p>Pago con transferencias</p>
+                <p class="price">
+                    $2800
+                </p>
+            </div>
+            <button class="btn btn-primary w-100">Confirmar Compra</button>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

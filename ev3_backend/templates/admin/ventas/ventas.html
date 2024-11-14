@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Ventas{% endblock title %}
+
+{% block content %}
+<div class="navbar navbar-expand-xl bg-dark w-100">
+    <a href="{% url 'admin-dashboard' %}" class="navbar-brand">
+        <img src="{% static 'images/icon/logo.png' %}" style="width: 100px" />
+    </a>
+</div>
+
+<div class="row">
+    <h4 class="h4" style="border-bottom: solid;">Ventas</h4>
+    <div class="col-lg-4 mb-4">
+        <div class="card text-center shadow">
+            <div class="card-body">
+                <h5 class="card-title">Producto Mas Vendido</h5>
+                {% if ventas %}
+                <!-- LOGICA PARA ENCONTRAR EL MAX PRODUCTO -->
+                <!-- COLOCAR LA CANTIDAD -->
+                {% else %}
+                <p class="card-text">No han habido ventas registradas</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 mb-4">
+        <div class="card text-center shadow">
+            <div class="card-body">
+                <h5 class="card-title">Ganancias Totales</h5>
+                {% if ventas %}
+                <!-- LOGICA PARA ENCONTRAR LAS GANANCIAS SUM(VENTAS.TOTAL) -->
+                {% else %}
+                <p class="card-text">No Se Han Registrado Ganancias</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 mb-4">
+        <div class="card text-center shadow">
+            <div class="card-body">
+                <h5 class="card-title">Producto Menos Vendido</h5>
+                {% if ventas %}
+                <!-- LOGICA PARA ENCONTRAR EL MIN PRODUCTO -->
+                <!-- Y COLOCAR LA CANTIDAD -->
+                {% else %}
+                <p class="card-text">No han habido ventas registradas</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive mt-3">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>NRO</th>
+                    <th>Cliente</th>
+                    <th>Fecha</th>
+                    <th>Total</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                {% if ventas %}
+                    {% for i in ventas %}
+                    <tr>
+                        <td>{{ i.id }}</td>
+                        <td>{{ i.usuario }}</td>
+                        <td>{{ i.fecha }}</td>
+                        <td>{{ i.total }}</td>
+                        <td>{% if estado %}Aprobada{% else %}Cancelada{% endif %}</td>
+                        <td>
+                            <a href="#" class="btn btn-primary"><i class="fa-solid fa-circle-info"></i></a>
+                            <a href="#" class="btn btn-primary"><i class="fa-solid fa-ban"></i></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                <tr id="emptyRow">
+                    <td colspan="6" class="text-center">
+                        No hay ventas
+                    </td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table> 
+    </div>
+</div>
+{% endblock %}

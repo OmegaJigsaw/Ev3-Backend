@@ -20,6 +20,7 @@ class Producto(models.Model):
     Categoria = models.ForeignKey(Categoria, on_delete=models.DO_NOTHING)
     stock = models.IntegerField()
     precio_unitario = models.FloatField()
+    imagen = models.ImageField(null=True, blank=True)
     disponible = models.BooleanField(default=True)
 
 # VENTA
@@ -27,6 +28,7 @@ class Venta(models.Model):
     fecha = models.DateField()
     total = models.FloatField()
     usuario = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    estado = models.BooleanField(default=True)
 
 class DetalleVenta(models.Model):
     venta = models.ForeignKey(Venta, on_delete=models.DO_NOTHING)
