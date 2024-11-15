@@ -1,10 +1,9 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
-from django.contrib.auth import logout
 from app.models import Rol, User, Categoria, Producto, Venta
 from app.forms import UserForm, LoginForm, CategoriaForm, ProductoForm
+from django.contrib.auth import logout
 
-# Create your views here.
 
 # HOME
 def inicio(request):
@@ -12,11 +11,17 @@ def inicio(request):
     user_id = request.session.get('user_id', None)
     nombre = request.session.get('nombre', None)
     username = request.session.get('username', None)
+
+    productos = Producto.objects.all()
+    categorias_con_producto = Categoria.objects.filter(producto__isnull=False).distinct()
+    
     return render(request, "shared/inicio.html",{
-        'username': username, 
-        'nombre': nombre, 
         'carrito': carrito,
         'user_id': user_id,
+        'nombre': nombre,
+        'username': username,
+        'productos': productos,
+        'categorias': categorias_con_producto,
     })
 
 # CARRO
@@ -49,7 +54,7 @@ def login(request):
                     if user.rol.id == 1:
                         return redirect('inicio')
                     if user.rol.id == 2:
-                        return redirect('admin_dashboard')
+                        return redirect('admin-dashboard')
                 else:
                     messages.error(request, 'Credenciales no Validas')
                     return redirect('login')
@@ -120,7 +125,7 @@ def EliminarCategoria(request, id):
 def RenderProductos(request):
     form = ProductoForm()
     if request.method == "POST":
-        form = ProductoForm(request.POST)
+        form = ProductoForm(request.POST, request.FILES)
         if (form.is_valid):
             form.save()
             return AdminDashboard(request)     
@@ -131,7 +136,7 @@ def RenderProductos(request):
 def ActualizarProducto(request, id):
     producto = Producto.objects.get(id=id)
     if request.method == "POST":
-        form = ProductoForm(request.POST, instance=producto)
+        form = ProductoForm(request.POST, request.FILES, instance=producto)
         if form.is_valid:
             form.save()
         return AdminDashboard(request)

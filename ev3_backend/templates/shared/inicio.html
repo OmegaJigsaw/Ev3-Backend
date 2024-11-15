@@ -34,6 +34,11 @@
         ><i class="fa-solid fa-user"></i>
       </a>
       {% else %}
+        {% if user_id == 2%}
+        <a href="{% url 'admin-dashboard' %}" class="btn btn-primary ms-2">
+            <i class="fa-solid fa-user-tie"></i>
+        </a>
+        {% endif%}
       <a href="{% url 'logout' %}" class="btn btn-danger ms-2"
         ><i class="fa-solid fa-right-from-bracket"></i>
       </a>
@@ -76,24 +81,32 @@
 
 <section class="catalog-container py-5">
     <h1>Catalogo Completo</h1>
-    <!-- SI HAY CATEGORIAS -->
+    {% if categorias %}
     <div class="row">
-        <!-- ITERAR CATEGORIA -->
-        <h2>Categoria Nombre</h2>
+        {% for cate in categorias %}
+        <h2 class="h2" style="border-bottom: solid;">{{ cate.nombre }}</h2>
         <div class="col">
             <div class="d-flex overflow-auto flex-nowrap">
-                <!-- ITERAR PRODUCTO -->
-                 <div class="card mx-2 shadow-lg">
+                {% for i in productos %}
+                <div class="card mx-2 shadow-lg">
                     <div class="card-body text-center">
-                        <!-- SI TIENE IMAGEN -->
-                         <a href="#">
-                            <img src="#" alt="#">
-                         </a>
+                        {% if i.imagen %}
+                        <a href="#">
+                            <img 
+                            src="{{ i.imagen.url }}" 
+                            alt="{{ i.nombre }}" 
+                            class="img-fluid" 
+                            style="max-height: 100px; max-width: 100px;"
+                            >
+                        </a>
+                        {% else %}
+                        <p class="text-danger">No hay imagen</p>
+                        {% endif %}
                     </div>
                     <div class="card-footer text-center">
-                        <p class="card-title mb-0">Producto Nombre</p>
-                        <p class="card-title mb-0 text-success">Producto Precio</p>
-                        <p class="card-title mb-0">Producto Stock</p>
+                        <p class="card-title mb-0">{{ i.nombre }}</p>
+                        <p class="card-title mb-0 text-success">Valor: {{ i.precio_unitario|floatformat:0 }}</p>
+                        <p class="card-title mb-0">Stock: {{ i.stock }}</p>
                     </div>
                     <!-- AGREGAR AL CARRO -->
                     <div class="mx-2 py-2">
@@ -108,9 +121,14 @@
                         </form>
                     </div>
                  </div>
+                 {% endfor %}
             </div>
         </div>
+        {% endfor %}
     </div>
+    {% else %}
+    <h5>NADA AUN</h5>
+    {% endif %}
 </section>
 
 {% endblock content %}

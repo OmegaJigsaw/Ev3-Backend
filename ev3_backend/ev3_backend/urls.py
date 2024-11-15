@@ -8,7 +8,7 @@ urlpatterns = [
     # USER GENERAL
     path("", v.inicio, name="inicio"),
     path("login/", v.login, name="login"),
-    path("logout/", v.login, name="logout"),
+    path("logout/", v.Logout, name="logout"),
     path("register/", v.Register, name="register"),
     path("carro/", v.RenderCarro, name="carro"),
 

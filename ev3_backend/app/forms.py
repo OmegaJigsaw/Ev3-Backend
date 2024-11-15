@@ -46,5 +46,6 @@ class ProductoForm(forms.ModelForm):
             'fecha_ingreso': forms.DateInput(attrs={'type':'date', 'class': 'form-control'}),
             'categoria': forms.Select(attrs={'class': 'form-select'}),
             'disponible': forms.HiddenInput(),
+            'imagen': forms.ClearableFileInput(attrs={'class': 'form-control', 'accept':'image/*'})
         }
         
