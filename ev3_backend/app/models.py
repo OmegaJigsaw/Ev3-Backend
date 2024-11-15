@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.hashers import make_password, check_password
 
 # USERS
 class Rol(models.Model):
@@ -9,19 +9,34 @@ class User(models.Model):
     nombre = models.CharField(max_length=30, default='')
     username = models.CharField(max_length=30, default='')
     password = models.CharField(max_length=128, default='')
-    rol = models.ForeignKey(Rol, on_delete=models.DO_NOTHING)
+    rol = models.ForeignKey(Rol, on_delete=models.DO_NOTHING, default=1)
+
+    def set_password(self, raw_password):
+        """Establecer la contraseña de forma segura."""
+        self.password = make_password(raw_password)
+
+    def check_password(self, raw_password):
+        """Verificar la contraseña."""
+        return check_password(raw_password, self.password)
 
 # PRODUCTOS
 class Categoria(models.Model):
     nombre = models.CharField(max_length=20, default='')
+    disponible = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.nombre  
 
 class Producto(models.Model):
     nombre = models.CharField(max_length=30, default='')
-    Categoria = models.ForeignKey(Categoria, on_delete=models.DO_NOTHING)
+    categoria = models.ForeignKey(Categoria, on_delete=models.DO_NOTHING)
     stock = models.IntegerField()
     precio_unitario = models.FloatField()
     imagen = models.ImageField(null=True, blank=True)
     disponible = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.nombre  
 
 # VENTA
 class Venta(models.Model):

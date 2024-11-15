@@ -1,6 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% if messages %}
+<div class="alert alert-info">
+    {% for message in messages %}
+        <p>{{ message }}</p>
+    {% endfor %}
+</div>
+{% endif %}
 <form method="POST">
     <div class="col-4 mt-5 mx-5">
         {% csrf_token %}

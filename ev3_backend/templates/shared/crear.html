@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Crear{% endblock title %}
+
+
+{% block content %}
+<body>
+    <form method="post">
+        {{ form.as_p }}
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">
+            {% if form.nombre.value %}
+            Actualizar
+            {% else %}
+            Guardar
+            {% endif %}
+        </button>
+    </form>
+</body>
+{% endblock %}

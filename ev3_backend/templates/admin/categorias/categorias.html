@@ -14,24 +14,22 @@
     <div class="table-responsive mt-3">
         <div class="row">
             <div class="col text-start">
-                <a href="{% url 'productos' %}" class="btn btn-primary mx-auto">Volver</a>                         
+                <a href="{% url 'admin-dashboard' %}" class="btn btn-primary mx-auto">Volver</a>                         
             </div>
         </div>
         <div class="row mt-3">
             <h5>Agregar Categoría</h5>
             <!-- MODIFICAR PARA HACERLO POSIBLE EL EDIT CON EL MISMO FORMULARIO -->
-            <form method="POST" action="#">
+            <form method="post">
+                {{ form.as_p }}
                 {% csrf_token %}
-                <div class="col-5">
-                    <label for="nombre">Nombre</label>
-                    <input type="text" class="form-control" id="nombre" name="nombre" maxlength="50">
-                    {% if errores.name_empty %}
-                    <span class="text-danger">{{ errores.name_empty }}</span>
-                    {% elif errores.name_max_char %}
-                    <span class="text-danger">{{ errores.name_max_char }}</span>
+                <button type="submit" class="btn btn-primary">
+                    {% if form.nombre.value %}
+                    Actualizar
+                    {% else %}
+                    Guardar
                     {% endif %}
-                </div>
-                <button type="submit" class="btn btn-primary mt-3">Añadir</button>
+                </button>
             </form>
         </div>
         <table class="table table-hover mt-3">
@@ -49,8 +47,11 @@
                     <td>{{ i.nombre }}</td>
                     <td>{% if i.disponible %}Disponible{% else %}No Disponible{% endif %}</td>
                     <td>
-                        <a href="#" class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i></a>
-                        <a href="#" class="btn btn-danger"><i class="fa-solid fa-trash"></i></a>
+                        <a href="{% url "actualizar-categorias" i.id %}" class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <a href="{% url "eliminar-categorias" i.id %}" class="{% if i.disponible %}btn btn-danger{% else %}btn btn-success{% endif %}">
+                            <i class="fa-solid fa-store-slash"></i>
+                        </a>
+
                     </td> 
                 </tr>
                 {% endfor %}

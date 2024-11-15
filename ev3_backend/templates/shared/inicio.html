@@ -10,7 +10,7 @@
         {% if user_id %}
         <div class="col ms-5">
             <p style="color: white;">Hola:</p>
-            <p style="color: white;">Usuario Nombre</p>
+            <p style="color: white;">{{ nombre }}</p>
         </div>
         {% else %}
         <div class="col ms-5">
@@ -34,7 +34,7 @@
         ><i class="fa-solid fa-user"></i>
       </a>
       {% else %}
-      <a href="{% url 'login' %}" class="btn btn-danger ms-2"
+      <a href="{% url 'logout' %}" class="btn btn-danger ms-2"
         ><i class="fa-solid fa-right-from-bracket"></i>
       </a>
       {% endif %}
