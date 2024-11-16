@@ -8,5 +8,70 @@
     <a href="{% url 'inicio' %}" class="navbar-brand">
         <img src="{% static 'images/icon/logo.png' %}" style="width: 100px" />
     </a>
+    {% if not user_id %}
+      <a href="{% url 'login' %}" class="btn btn-primary me-3"
+        ><i class="fa-solid fa-user"></i>
+      </a>
+      {% else %}
+        {% if rol_user == 2 %}
+        <a href="{% url 'admin-dashboard' %}" class="btn btn-primary ms-2">
+            <i class="fa-solid fa-user-tie"></i>
+        </a>
+        {% endif %}
+      <a href="{% url 'logout' %}" class="btn btn-danger ms-2"
+        ><i class="fa-solid fa-right-from-bracket"></i>
+      </a>
+    {% endif %}
 </div>
+
+<div class="container d-flex justify-content-center py-5"> <!-- Cambio: Añadir contenedor con centrado -->
+    <div class="row w-100 align-items-center justify-content-center"> <!-- Cambio: Añadir w-100 para asegurarse que la fila ocupa todo el espacio disponible -->
+        
+        <!-- Mensajes de alerta -->
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == 'success' %}
+                    <div class="alert alert-success col-12 mb-3">
+                        <p>{{ message }}</p>
+                    </div>
+                {% elif message.tags == 'error' %}
+                    <div class="alert alert-danger col-12 mb-3">
+                        <p>{{ message }}</p>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+
+        <!-- Tarjeta del producto -->
+        <div class="col-12 col-md-8 mb-4">
+            <div class="card p-4 mb-4 mx-4 shadow-lg" style="border-radius: 15px;">
+                <div class="row">
+                    <div class="col-md-4 py-5">
+                        <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" class="img-fluid rounded" style="max-height: 350px; object-fit: cover;">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title" style="font-size: 1.8rem; font-weight: bold;">{{ producto.nombre }}</h5>
+                            <p class="card-text" style="font-size: 1.2rem; color: #555;">{{ producto.descripcion }}</p>
+                            <p class="card-text text-success" style="font-size: 1.5rem;">Valor: ${{ producto.precio_unitario|floatformat:0 }}</p>
+                            <p class="card-text" style="font-size: 1.2rem;">Stock disponible: {{ producto.stock }}</p>
+
+                            <!-- Formulario para añadir al carrito -->
+                            <form method="POST" action="{% url 'addCarro' producto.id %}">
+                                {% csrf_token %}
+                                <div class="d-flex justify-content-start align-items-center">
+                                    <input type="number" name="cantidad" min="1" max="{{ producto.stock }}" value="1" class="form-control mt-2" style="max-width: 100px; font-size: 1rem;">
+                                    <button type="submit" class="btn btn-success mt-2 ms-3" style="width: 150px; border-radius: 5px; font-weight: bold; font-size: 1.1rem;">
+                                        <i class="fa-solid fa-cart-plus"></i> Añadir al carrito
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}

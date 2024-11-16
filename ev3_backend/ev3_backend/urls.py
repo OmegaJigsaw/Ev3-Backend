@@ -30,8 +30,11 @@ urlpatterns = [
     path("admin/productos/", v.RenderProductos, name="productos"), 
     path("admin/productos/eliminar-productos<int:id>", v.EliminarProducto, name="eliminar-productos"),
     path("admin/productos/actualizar-productos<int:id>", v.ActualizarProducto, name="actualizar-productos"),
+    path("admin/productos/descriptor/<int:id>/", v.RenderDesc, name="descriptor"),
 
     # Ventas
     path("admin/ventas/", v.RenderVentas, name="ventas"), 
+    path("admin/ventas/eliminar-venta<int:id>", v.EliminarVenta, name="eliminar-venta"),
+
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

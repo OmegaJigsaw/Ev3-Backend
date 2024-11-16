@@ -21,8 +21,7 @@
             <div class="card-body">
                 <h5 class="card-title">Producto Mas Vendido</h5>
                 {% if ventas %}
-                <!-- LOGICA PARA ENCONTRAR EL MAX PRODUCTO -->
-                <!-- COLOCAR LA CANTIDAD -->
+                {{producto_mas_vendido.producto__nombre}}
                 {% else %}
                 <p class="card-text">No han habido ventas registradas</p>
                 {% endif %}
@@ -34,7 +33,7 @@
             <div class="card-body">
                 <h5 class="card-title">Ganancias Totales</h5>
                 {% if ventas %}
-                <!-- LOGICA PARA ENCONTRAR LAS GANANCIAS SUM(VENTAS.TOTAL) -->
+                {{ ganancias_totales|floatformat:0 }}
                 {% else %}
                 <p class="card-text">No Se Han Registrado Ganancias</p>
                 {% endif %}
@@ -46,8 +45,7 @@
             <div class="card-body">
                 <h5 class="card-title">Producto Menos Vendido</h5>
                 {% if ventas %}
-                <!-- LOGICA PARA ENCONTRAR EL MIN PRODUCTO -->
-                <!-- Y COLOCAR LA CANTIDAD -->
+                {{ producto_menos_vendido.producto__nombre }}
                 {% else %}
                 <p class="card-text">No han habido ventas registradas</p>
                 {% endif %}
@@ -71,13 +69,13 @@
                     {% for i in ventas %}
                     <tr>
                         <td>{{ i.id }}</td>
-                        <td>{{ i.usuario }}</td>
+                        <td>{{ i.usuario.nombre }}</td>
                         <td>{{ i.fecha }}</td>
-                        <td>{{ i.total }}</td>
-                        <td>{% if estado %}Aprobada{% else %}Cancelada{% endif %}</td>
+                        <td>{{ i.total|floatformat:0 }}</td>
+                        <td>{% if i.estado %}Aprobada{% else %}Cancelada{% endif %}</td>
                         <td>
                             <a href="#" class="btn btn-primary"><i class="fa-solid fa-circle-info"></i></a>
-                            <a href="#" class="btn btn-primary"><i class="fa-solid fa-ban"></i></a>
+                            <a href="{% url "eliminar-venta" i.id %}" class="btn btn-danger"><i class="fa-solid fa-ban"></i></a>
                         </td>
                     </tr>
                     {% endfor %}

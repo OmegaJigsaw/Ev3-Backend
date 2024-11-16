@@ -34,11 +34,11 @@
         ><i class="fa-solid fa-user"></i>
       </a>
       {% else %}
-        {% if user_id == 2%}
+        {% if rol_user == 2 %}
         <a href="{% url 'admin-dashboard' %}" class="btn btn-primary ms-2">
             <i class="fa-solid fa-user-tie"></i>
         </a>
-        {% endif%}
+        {% endif %}
       <a href="{% url 'logout' %}" class="btn btn-danger ms-2"
         ><i class="fa-solid fa-right-from-bracket"></i>
       </a>
@@ -47,6 +47,19 @@
 </nav>
 
 <div class="container mt-5">
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'success' %}
+                <div class="alert alert-success">
+                    <p>{{ message }}</p>
+                </div>
+                {% elif message.tags == 'error' %}
+                <div class="alert alert-danger">
+                    <p>{{ message }}</p>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
     <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
             <div class="carousel-item active">
@@ -91,7 +104,7 @@
                 <div class="card mx-2 shadow-lg">
                     <div class="card-body text-center">
                         {% if i.imagen %}
-                        <a href="#">
+                        <a href="{% url 'descriptor' i.id %}">
                             <img 
                             src="{{ i.imagen.url }}" 
                             alt="{{ i.nombre }}" 
@@ -113,7 +126,7 @@
                         <form method="POST" action="{% url 'addCarro' i.id %}">
                             {% csrf_token %}
                             <div class="d-flex justify-content-center align-items-center">
-                                <input type="number" name="cantidad" min="1" value="1" class="form-control mt-2" style="max-width: 80px;">
+                                <input type="number" name="cantidad" min="1" max="{{ i.stock }}" value="1" class="form-control mt-2" style="max-width: 80px;">
                                 <button type="submit" class="btn btn-success mt-2 ms-2" style="width: 120px; border-radius: 5px; font-weight: bold;">
                                     <i class="fa-solid fa-cart-plus"></i>
                                 </button>

@@ -1,6 +1,7 @@
 import datetime
 from django.contrib import messages
 from django.shortcuts import render, redirect
+from django.db.models import Sum, Count
 from app.models import DetalleVenta, Rol, User, Categoria, Producto, Venta
 from app.forms import UserForm, LoginForm, CategoriaForm, ProductoForm
 from django.contrib.auth import logout
@@ -12,6 +13,7 @@ def inicio(request):
     user_id = request.session.get('user_id', None)
     nombre = request.session.get('nombre', None)
     username = request.session.get('username', None)
+    rol = request.session.get('rol_user', None)
 
     productos = Producto.objects.all()
     categorias_con_producto = Categoria.objects.filter(producto__isnull=False).distinct()
@@ -23,6 +25,7 @@ def inicio(request):
         'username': username,
         'productos': productos,
         'categorias': categorias_con_producto,
+        'rol_user': rol,
     })
 
 # CARRO
@@ -115,8 +118,9 @@ def Vender(request):
     return redirect('carro')
 
 # DESCRIPCION DEL PRODUCTO (USER)
-def RenderDesc(request):
-    render(request, 'user/descProducto.html')
+def RenderDesc(request, id):
+    producto = Producto.objects.get(id=id)
+    return render(request, 'user/descProducto.html', {'producto':producto})
 
 # LOGOUT
 def Logout(request):
@@ -137,6 +141,7 @@ def login(request):
                     request.session['user_id'] = user.id
                     request.session['nombre'] = user.nombre
                     request.session['username'] = user.username
+                    request.session['rol_user'] = user.rol.id
                     if user.rol.id == 1:
                         return redirect('inicio')
                     if user.rol.id == 2:
@@ -242,5 +247,26 @@ def EliminarProducto(request, id):
             return RenderProductos(request)
 
 def RenderVentas(request):
-    return render(request, 'admin/ventas/ventas.html')
+    ventas = Venta.objects.all()
+    ganancias_totales = ventas.aggregate(Sum('total'))['total__sum'] or 0
+    productos_vendidos = DetalleVenta.objects.values('producto__nombre').annotate(cantidad_vendida=Sum('cantidad')).order_by('-cantidad_vendida')
+    producto_mas_vendido = productos_vendidos.first()
+    producto_menos_vendido = productos_vendidos.last()
+    data = {
+        'ventas': ventas,
+        'ganancias_totales': ganancias_totales,
+        'producto_mas_vendido': producto_mas_vendido,
+        'producto_menos_vendido': producto_menos_vendido,
+    }
+    return render(request, 'admin/ventas/ventas.html', data)
 
+def EliminarVenta(request, id):
+        venta = Venta.objects.get(id=id)
+        if venta.estado == True:
+            venta.estado = False
+            venta.save()
+            return RenderVentas(request)
+        else:
+            venta.estado = True
+            venta.save()
+            return RenderVentas(request)

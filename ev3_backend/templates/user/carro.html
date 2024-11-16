@@ -8,6 +8,20 @@
     <a href="{% url 'inicio' %}" class="navbar-brand">
         <img src="{% static 'images/icon/logo.png' %}" style="width: 100px" />
     </a>
+    {% if not user_id %}
+      <a href="{% url 'login' %}" class="btn btn-primary me-3"
+        ><i class="fa-solid fa-user"></i>
+      </a>
+      {% else %}
+        {% if rol_user == 2 %}
+        <a href="{% url 'admin-dashboard' %}" class="btn btn-primary ms-2">
+            <i class="fa-solid fa-user-tie"></i>
+        </a>
+        {% endif %}
+      <a href="{% url 'logout' %}" class="btn btn-danger ms-2"
+        ><i class="fa-solid fa-right-from-bracket"></i>
+      </a>
+    {% endif %}
 </div>
 
 <!-- PRODUCTOS -->
@@ -68,7 +82,11 @@
                     ${{ total|floatformat:0 }}
                 </p>
             </div>
+            {% if request.session.user_id %}
             <a href="{% url 'vender' %}" class="btn btn-success w-100">Confirmar Compra</a>
+            {% else %}
+            <a href="{% url 'login' %}" class="btn btn-success w-100">Confirmar Compra</a>
+            {% endif %}
         </div>
     </div>
 </div>
