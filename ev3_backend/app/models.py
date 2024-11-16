@@ -31,6 +31,7 @@ class Producto(models.Model):
     stock = models.IntegerField()
     precio_unitario = models.FloatField()
     imagen = models.ImageField(upload_to='productos/', null=True, blank=True)
+    descripcion = models.TextField(default='')
     disponible = models.BooleanField(default=True)
 
     def __str__(self):
@@ -46,4 +47,6 @@ class Venta(models.Model):
 class DetalleVenta(models.Model):
     venta = models.ForeignKey(Venta, on_delete=models.DO_NOTHING)
     producto = models.ForeignKey(Producto, on_delete=models.DO_NOTHING)
+    precio_momento_venta = models.FloatField(default=0)
+    cantidad = models.IntegerField(default=1)
     subtotal = models.FloatField()

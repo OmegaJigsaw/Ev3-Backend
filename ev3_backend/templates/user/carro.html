@@ -10,81 +10,65 @@
     </a>
 </div>
 
-<!-- EJEMPLO VISTA CARRO -->
-<!-- FALTA TODA LA LOGICA DE VISUALIZACION REAL -->
+<!-- PRODUCTOS -->
 <div class="row d-flex flex-wrap py-5">
-    <!-- Lista de productos -->
     <div class="col-12 col-md-8 mb-4">
-        <!-- Producto 1 -->
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == 'success' %}
+                <div class="alert alert-success">
+                    <p>{{ message }}</p>
+                </div>
+                {% elif message.tags == 'error' %}
+                <div class="alert alert-danger">
+                    <p>{{ message }}</p>
+                </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        {% if carrito %}
+        {% for i in carrito %}
         <div class="card p-3 mb-3">
             <div class="row">
                 <div class="col-md-3 py-5">
-                    <img src="{% static 'images/carousel/ropa.jpg' %}" alt="Producto 1" class="img-fluid">
+                    <img src="{{ i.imagen }}" alt="{{ i.nombre }}" class="img-fluid">
                 </div>
                 <div class="col-md-9">
                     <div class="card-body">
-                        <h5 class="card-title">Producto 1</h5>
-                        <p class="card-text">Descripción del Producto 1</p>
+                        <h5 class="card-title">{{ i.nombre }}</h5>
+                        <p class="card-text">{{ i.descripcion }}</p>
                         
                         <div class="d-flex justify-content-start align-items-center">
-                            <button class="btn btn-outline-secondary me-2">-</button>
-                            <input type="text" value="1" class="form-control w-auto me-2">
-                            <button class="btn btn-outline-secondary">+</button>
+                            <a href="{% url 'cantCarro' i.id 'resta' %}" class="btn btn-outline-secondary me-2">-</a>
+                            <input disabled type="text" value="{{ i.cantidad }}" class="form-control w-auto me-2">
+                            <a href="{% url 'cantCarro' i.id 'suma' %}" class="btn btn-outline-secondary me-2">+</a>
                         </div>
                         
                         <p class="mt-2">
-                            <span class="text-decoration-line-through text-muted">$1000</span>
-                            <span class="ms-2 text-success">$800</span>
+                            <span class="ms-2 text-success">${{ i.precio }}</span>
                         </p>
-                        <p class="text-muted">Pago con transferencias</p>
-                        <p class="price">$800 <small class="text-muted">Otros medios de pago</small></p>
-                        <a href="#" class="btn btn-danger mt-2">Eliminar</a>
+                        <a href="{% url 'deleteCarro' i.id %}" class="btn btn-danger mt-1">Eliminar</a>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- Producto 2 -->
-        <div class="card p-3">
-            <div class="row">
-                <div class="col-md-3 py-5">
-                    <img src="{% static 'images/carousel/juguetes.jpg' %}" alt="Producto 2" class="img-fluid">
-                </div>
-                <div class="col-md-9">
-                    <div class="card-body">
-                        <h5 class="card-title">Producto 2</h5>
-                        <p class="card-text">Descripción del Producto 2</p>
-                        
-                        <div class="d-flex justify-content-start align-items-center">
-                            <button class="btn btn-outline-secondary me-2">-</button>
-                            <input type="text" value="2" class="form-control w-auto me-2">
-                            <button class="btn btn-outline-secondary">+</button>
-                        </div>
-                        
-                        <p class="mt-2">
-                            <span class="text-decoration-line-through text-muted">$1200</span>
-                            <span class="ms-2 text-success">$1000</span>
-                        </p>
-                        <p class="text-muted">Pago con transferencias</p>
-                        <p class="price">$2000 <small class="text-muted">Otros medios de pago</small></p>
-                        <a href="#" class="btn btn-danger mt-2">Eliminar</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+        {% endfor %}
+        {% else %}
+        <h2 class="text-info">No Hay Elementos en el Carro</h2>
+        {% endif %}
     </div>
 
-    <!-- Resumen y botón de pago -->
+    <!-- RESUMEN Y BTN PAGO -->
     <div class="col-12 col-md-4 d-flex flex-column py-5">
         <div class="card p-3">
-            <h4>Resumen (2 productos)</h4>
+            <h4>Resumen ({{ carrito|length }}) productos</h4>
             <div class="d-flex justify-content-between">
-                <p>Pago con transferencias</p>
+                <p>Total</p>
                 <p class="price">
-                    $2800
+                    ${{ total|floatformat:0 }}
                 </p>
             </div>
-            <button class="btn btn-primary w-100">Confirmar Compra</button>
+            <a href="{% url 'vender' %}" class="btn btn-success w-100">Confirmar Compra</a>
         </div>
     </div>
 </div>

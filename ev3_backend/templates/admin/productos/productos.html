@@ -4,40 +4,47 @@
 
 {% block content %}
 <div class="navbar navbar-expand-xl bg-dark w-100">
-    <a href="{% url 'inicio' %}" class="navbar-brand">
+    <a href="{% url 'admin-dashboard' %}" class="navbar-brand">
         <img src="{% static 'images/icon/logo.png' %}" style="width: 100px" />
     </a>
 </div>
 
 <div class="row mt-3">
-    <h4 class="h4" style="border-bottom: solid;">Productos</h4>
-    <div class="table-responsive mt-3">
-        <div class="row mb-3">
-            <div class="col text-start">
-                <a href="{% url 'admin-dashboard' %}" class="btn btn-primary mx-auto">Volver</a>
-                <a href="{% url 'categorias' %}" class="btn btn-primary">Categorías</a>
-            </div>
-            <div class="row mt-3">
-                <h5>Agregar Categoría</h5>
-                <!-- MODIFICAR PARA HACERLO POSIBLE EL EDIT CON EL MISMO FORMULARIO -->
-                <form method="post" enctype="multipart/form-data">
-                    {{ form.as_p }}
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-primary">
-                        {% if form.nombre.value %}
-                        Actualizar
-                        {% else %}
-                        Guardar
-                        {% endif %}
-                    </button>
-                </form>
-            </div>
+    <h3 class="h3" style="border-bottom: solid;">Agregar Producto</h3>
+    <div class="row mb-3">
+        <div class="col text-start">
+            <a href="{% url 'admin-dashboard' %}" class="btn btn-primary mx-auto">Volver</a>
+            <a href="{% url 'categorias' %}" class="btn btn-primary">Categorías</a>
         </div>
-        <table class="table table-hover">
+        <div class="row mt-3">
+            <form method="post" enctype="multipart/form-data">
+                {{ form.as_p }}
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary">
+                    {% if form.nombrse.value %}
+                    Actualizar
+                    {% else %}
+                    Guardar
+                    {% endif %}
+                </button>
+            </form>
+        </div>
+    </div>
+    <h3 style="border-bottom: solid;">Productos</h3>
+    <div class="table-responsive">
+        <form action="POST">
+            <div class="form-group">
+                <label for="nombre">Busqueda por Nombre</label>
+                <input type="text" name="nombre" id="nombre" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-primary mt-2">Buscar</button>
+        </form>
+        <table class="table table-hover mt-3">
             <thead>
                 <tr>
                     <th>Imagen</th>
                     <th>Nombre</th>
+                    <th>Descripcion</th>
                     <th>Categoría</th>
                     <th>Stock</th>
                     <th>Precio Unitario</th>
@@ -57,9 +64,10 @@
                             {% endif %}
                         </td>
                         <td>{{ i.nombre }}</td>
+                        <td>{{ i.descripcion }}</td>
                         <td>{{ i.categoria.nombre }}</td>
                         <td>{{ i.stock }}</td>
-                        <td>{{ i.precio_unitario }}</td>
+                        <td>{{ i.precio_unitario|floatformat:0 }}</td>
                         <td>{% if i.disponible %}Disponible{% else %}No Disponible{% endif %}</td>
                         <td>
                             <a href="{% url "actualizar-productos" i.id %}" class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i></a>

@@ -1,13 +1,14 @@
+import datetime
 from django.contrib import messages
 from django.shortcuts import render, redirect
-from app.models import Rol, User, Categoria, Producto, Venta
+from app.models import DetalleVenta, Rol, User, Categoria, Producto, Venta
 from app.forms import UserForm, LoginForm, CategoriaForm, ProductoForm
 from django.contrib.auth import logout
 
 
 # HOME
 def inicio(request):
-    carrito = request.session.get("carro", [])
+    carrito = request.session.get("carrito", [])
     user_id = request.session.get('user_id', None)
     nombre = request.session.get('nombre', None)
     username = request.session.get('username', None)
@@ -26,7 +27,92 @@ def inicio(request):
 
 # CARRO
 def RenderCarro(request):
-    return render(request, 'user/carro.html')
+    carrito = request.session.get('carrito', [])
+    total_carro = sum(item['subtotal'] for item in carrito)
+    return render(request, 'user/carro.html', {'carrito': carrito, 'total': total_carro})
+
+def AddCarro(request, id):
+    producto = Producto.objects.get(id=id)
+    cantidad = int(request.POST.get('cantidad', 1))
+    carrito = request.session.get('carrito', [])
+    
+    for item in carrito:
+        if item['id'] == producto.id:
+            item['cantidad'] += cantidad
+            item['subtotal'] = item['precio'] * item['cantidad']
+            break
+    else:
+        carrito.append({
+            'id': producto.id,
+            'nombre': producto.nombre,
+            'cantidad': cantidad,
+            'precio': producto.precio_unitario,
+            'subtotal': producto.precio_unitario * cantidad,
+            'imagen': producto.imagen.url,
+            'descripcion': producto.descripcion
+        })
+    request.session['carrito'] = carrito 
+    return redirect('inicio')
+
+def CantidadCarro(request, id, op):
+    carrito = request.session.get('carrito', [])
+    producto = Producto.objects.get(id=id)
+    for i in carrito:
+        if i['id'] == id:
+            if op == 'suma':
+                if i['cantidad'] < producto.stock:
+                    i['cantidad'] += 1 
+            elif op == 'resta' and i['cantidad'] > 1:
+                i['cantidad'] -= 1
+            i['subtotal'] = i['precio'] * i['cantidad']
+            break
+    request.session['carrito'] = carrito
+    return redirect('carro')
+
+def DeleteItemCarro(request, id):
+    carrito = request.session.get('carrito', [])
+    carrito = [item for item in carrito if item['id'] != id]
+    request.session['carrito'] = carrito
+    return redirect('carro')  
+
+# REALIZAR VENTA (CARRO)
+def Vender(request):
+    carrito = request.session.get('carrito', [])
+    if carrito:
+        try:
+            user = User.objects.get(username=request.session.get('username'))
+        except User.DoesNotExist:
+            messages.error(request, 'Usuario no Encontrado')
+        venta = Venta.objects.create(
+            usuario=user,
+            fecha=datetime.date.today(),
+            total=0,
+        )
+        total_compra = 0
+        
+        for item in carrito:
+            producto = Producto.objects.get(id=item['id'])
+            subtotal = item['subtotal']
+            total_compra += subtotal
+            
+            DetalleVenta.objects.create(
+                venta=venta,
+                producto=producto,
+                cantidad=item['cantidad'],
+                precio_momento_venta= producto.precio_unitario,
+                subtotal=subtotal
+            )
+            producto.stock -= item['cantidad']
+            producto.save()
+
+        venta.total = total_compra
+        venta.save()
+
+        request.session['carrito'] = []
+        messages.success(request, 'Compra Realizada, Gracias por su Preferencia')
+    else:
+        messages.error(request, 'No hay productos en el carrito.')
+    return redirect('carro')
 
 # DESCRIPCION DEL PRODUCTO (USER)
 def RenderDesc(request):

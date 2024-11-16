@@ -41,6 +41,7 @@ class ProductoForm(forms.ModelForm):
 
         widgets = {
             'nombre': forms.TextInput(attrs={'class': 'form-control'}),
+            'descripcion': forms.Textarea(attrs={'class': 'form-control', 'rows': '3'}),
             'stock': forms.NumberInput(attrs={'class': 'form-control'}),
             'precio_unitario': forms.NumberInput(attrs={'class': 'form-control','min': '1','step': '1'}),
             'fecha_ingreso': forms.DateInput(attrs={'type':'date', 'class': 'form-control'}),

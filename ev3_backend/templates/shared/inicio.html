@@ -110,7 +110,7 @@
                     </div>
                     <!-- AGREGAR AL CARRO -->
                     <div class="mx-2 py-2">
-                        <form method="POST" action="#">
+                        <form method="POST" action="{% url 'addCarro' i.id %}">
                             {% csrf_token %}
                             <div class="d-flex justify-content-center align-items-center">
                                 <input type="number" name="cantidad" min="1" value="1" class="form-control mt-2" style="max-width: 80px;">
