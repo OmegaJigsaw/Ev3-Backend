@@ -247,7 +247,7 @@ def EliminarProducto(request, id):
             return RenderProductos(request)
 
 def RenderVentas(request):
-    ventas = Venta.objects.all()
+    ventas = Venta.objects.filter(estado=True)
     ganancias_totales = ventas.aggregate(Sum('total'))['total__sum'] or 0
     productos_vendidos = DetalleVenta.objects.values('producto__nombre').annotate(cantidad_vendida=Sum('cantidad')).order_by('-cantidad_vendida')
     producto_mas_vendido = productos_vendidos.first()
