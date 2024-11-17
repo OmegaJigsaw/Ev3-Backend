@@ -7,7 +7,7 @@ class Rol(models.Model):
 
 class User(models.Model):
     nombre = models.CharField(max_length=30, default='')
-    username = models.CharField(max_length=30, default='')
+    username = models.CharField(max_length=30, default='', unique=True)
     password = models.CharField(max_length=128, default='')
     rol = models.ForeignKey(Rol, on_delete=models.DO_NOTHING, default=1)
 
@@ -19,14 +19,14 @@ class User(models.Model):
 
 # PRODUCTOS
 class Categoria(models.Model):
-    nombre = models.CharField(max_length=20, default='')
+    nombre = models.CharField(max_length=20, default='', unique=True)
     disponible = models.BooleanField(default=True)
 
     def __str__(self):
         return self.nombre  
 
 class Producto(models.Model):
-    nombre = models.CharField(max_length=30, default='')
+    nombre = models.CharField(max_length=30, default='', unique=True)
     categoria = models.ForeignKey(Categoria, on_delete=models.DO_NOTHING)
     stock = models.IntegerField()
     precio_unitario = models.FloatField()

@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Ventas{% endblock title %}
+
+{% block content %}
+<div class="navbar navbar-expand-xl bg-dark w-100">
+    <a href="{% url 'admin-dashboard' %}" class="navbar-brand">
+        <img src="{% static 'images/icon/logo.png' %}" style="width: 100px" />
+    </a>
+</div>
+
+<div class="row">
+    <div class="row mt-3">
+        <div class="col text-start">
+            <a href="{% url 'ventas' %}" class="btn btn-primary mx-auto">Volver</a>                         
+        </div>
+    </div>
+    <h4 class="h4" style="border-bottom: solid;">Ventas</h4>
+    <div class="table-responsive mt-3">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>NRO</th>
+                    <th>Producto</th>
+                    <th>Precio Unitario</th>
+                    <th>Cantidad</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                {% if venta %}
+                    {% for i in venta %}
+                    <tr>
+                        <td>{{ i.id }}</td>
+                        <td>{{ i.producto.nombre }}</td>
+                        <td>{{ i.precio_momento_venta|floatformat:0 }}</td>
+                        <td>{{ i.cantidad }}</td>
+                        <td>{{ i.subtotal|floatformat:0 }}</td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                <tr id="emptyRow">
+                    <td colspan="6" class="text-center">
+                        No hay ventas
+                    </td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table> 
+    </div>
+</div>
+{% endblock %}

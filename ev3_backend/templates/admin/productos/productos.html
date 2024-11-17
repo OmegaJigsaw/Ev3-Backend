@@ -10,7 +10,28 @@
 </div>
 
 <div class="row mt-3">
-    <h3 class="h3" style="border-bottom: solid;">Agregar Producto</h3>
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'success' %}
+                <div class="alert alert-success">
+                    <p>{{ message }}</p>
+                </div>
+                {% elif message.tags == 'error' %}
+                <div class="alert alert-danger">
+                    <p>{{ message }}</p>
+                </div>
+                {% elif message.tags == 'info' %}
+                <div class="alert alert-info">
+                    <p>{{ message }}</p>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    <h3 class="h3" style="border-bottom: solid;">{% if form.nombre.value %}
+        Actualizar Producto
+        {% else %}
+        Agregar Producto
+        {% endif %}</h3>
     <div class="row mb-3">
         <div class="col text-start">
             <a href="{% url 'admin-dashboard' %}" class="btn btn-primary mx-auto">Volver</a>
@@ -20,8 +41,8 @@
             <form method="post" enctype="multipart/form-data">
                 {{ form.as_p }}
                 {% csrf_token %}
-                <button type="submit" class="btn btn-primary">
-                    {% if form.nombrse.value %}
+                <button type="submit" class="btn btn-primary" name="agregar_btn">
+                    {% if form.nombre.value %}
                     Actualizar
                     {% else %}
                     Guardar
@@ -32,12 +53,14 @@
     </div>
     <h3 style="border-bottom: solid;">Productos</h3>
     <div class="table-responsive">
-        <form action="POST">
+        <form method="POST">
+            {% csrf_token %}
             <div class="form-group">
-                <label for="nombre">Busqueda por Nombre</label>
-                <input type="text" name="nombre" id="nombre" class="form-control">
+                <label for="busqueda">Busqueda por Nombre</label>
+                <input type="text" name="busqueda" id="busqueda" class="form-control">
             </div>
-            <button type="submit" class="btn btn-primary mt-2">Buscar</button>
+            <button type="submit" class="btn btn-primary mt-2" name="buscar_btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+            <a href="{% url 'productos' %}" class="btn btn-primary mt-2">All</a>
         </form>
         <table class="table table-hover mt-3">
             <thead>

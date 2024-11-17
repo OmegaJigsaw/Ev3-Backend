@@ -9,8 +9,29 @@
     </a>
 </div>
 
-<div class="row">
-    <h4 class="h4" style="border-bottom: solid;">Categorías</h4>
+<div class="row mt-3">
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'success' %}
+                <div class="alert alert-success">
+                    <p>{{ message }}</p>
+                </div>
+                {% elif message.tags == 'error' %}
+                <div class="alert alert-danger">
+                    <p>{{ message }}</p>
+                </div>
+                {% elif message.tags == 'info' %}
+                <div class="alert alert-info">
+                    <p>{{ message }}</p>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    <h4 class="h4" style="border-bottom: solid;">{% if form.nombre.value %}
+        Actualizar Categoria
+        {% else %}
+        Agregar Categoria
+        {% endif %}</h4>
     <div class="table-responsive mt-3">
         <div class="row">
             <div class="col text-start">

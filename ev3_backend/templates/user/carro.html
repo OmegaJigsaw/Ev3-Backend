@@ -12,15 +12,17 @@
       <a href="{% url 'login' %}" class="btn btn-primary me-3"
         ><i class="fa-solid fa-user"></i>
       </a>
-      {% else %}
+    {% else %}
+     <div class="text-end">
         {% if rol_user == 2 %}
-        <a href="{% url 'admin-dashboard' %}" class="btn btn-primary ms-2">
-            <i class="fa-solid fa-user-tie"></i>
-        </a>
+            <a href="{% url 'admin-dashboard' %}" class="btn btn-primary ms-2">
+                <i class="fa-solid fa-user-tie"></i>
+            </a>
         {% endif %}
-      <a href="{% url 'logout' %}" class="btn btn-danger ms-2"
-        ><i class="fa-solid fa-right-from-bracket"></i>
-      </a>
+        <a href="{% url 'logout' %}" class="btn btn-danger me-3"
+            ><i class="fa-solid fa-right-from-bracket"></i>
+        </a>
+     </div>
     {% endif %}
 </div>
 
@@ -45,7 +47,11 @@
         <div class="card p-3 mb-3">
             <div class="row">
                 <div class="col-md-3 py-5">
+                    {% if i.imagen %}
                     <img src="{{ i.imagen }}" alt="{{ i.nombre }}" class="img-fluid">
+                    {% else %}
+                    <p class="text-danger">Imagen no Disponible</p>
+                    {% endif %}
                 </div>
                 <div class="col-md-9">
                     <div class="card-body">

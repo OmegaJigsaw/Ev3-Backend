@@ -35,6 +35,7 @@ urlpatterns = [
     # Ventas
     path("admin/ventas/", v.RenderVentas, name="ventas"), 
     path("admin/ventas/eliminar-venta<int:id>", v.EliminarVenta, name="eliminar-venta"),
+    path("admin/ventas/detalle-venta<int:id>", v.RenderDetalleVenta, name="detalle-venta"),
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

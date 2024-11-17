@@ -47,7 +47,11 @@
             <div class="card p-4 mb-4 mx-4 shadow-lg" style="border-radius: 15px;">
                 <div class="row">
                     <div class="col-md-4 py-5">
+                        {% if producto.imagen %}
                         <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" class="img-fluid rounded" style="max-height: 350px; object-fit: cover;">
+                        {% else %}
+                        <p  class="text-danger">No hay imagen disponible</p>
+                        {% endif %}
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">

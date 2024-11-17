@@ -17,14 +17,16 @@
             <p style="color: white;">Bienvenido</p>
         </div>
         {% endif %}
-      <form class="d-flex ms-auto" role="search">
+      <form class="d-flex ms-auto" role="search" method="POST">
+        {% csrf_token %}
         <input
           class="form-control me-2"
           type="search"
           placeholder="Search"
           aria-label="Search"
+          name="search"
         />
-        <button class="btn btn-outline-success" type="submit">Search</button>
+        <button class="btn btn-outline-success" type="submit">Buscar</button>
       </form>
       <a href="{% url 'carro' %}" class="btn btn-success ms-5"
         ><i class="fa-solid fa-cart-shopping"></i>
@@ -55,6 +57,10 @@
                 </div>
                 {% elif message.tags == 'error' %}
                 <div class="alert alert-danger">
+                    <p>{{ message }}</p>
+                </div>
+                {% elif message.tags == 'info' %}
+                <div class="alert alert-info">
                     <p>{{ message }}</p>
                 </div>
             {% endif %}
@@ -100,7 +106,7 @@
         <h2 class="h2" style="border-bottom: solid;">{{ cate.nombre }}</h2>
         <div class="col">
             <div class="d-flex overflow-auto flex-nowrap">
-                {% for i in productos %}
+                {% for i in cate.producto_set.all %}
                 <div class="card mx-2 shadow-lg">
                     <div class="card-body text-center">
                         {% if i.imagen %}
