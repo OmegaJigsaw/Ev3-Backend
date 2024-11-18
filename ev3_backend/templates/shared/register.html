@@ -1,18 +1,43 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
-{% if messages %}
-<div class="alert alert-info">
-    {% for message in messages %}
-        <p>{{ message }}</p>
-    {% endfor %}
+<div class="navbar navbar-expand-xl bg-dark w-100">
+    <a href="{% url 'inicio' %}" class="navbar-brand">
+        <img src="{% static 'images/icon/logo.png' %}" style="width: 100px" />
+    </a>
 </div>
-{% endif %}
-<form method="POST">
-    <div class="col-4 mt-5 mx-5">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Registrar</button>
+<div class="container d-flex align-items-center justify-content-center" style="height: 70vh;">
+    <div class="card p-4 shadow" style="max-width: 32rem; width: 100%;">
+        <form method="POST">
+            {% csrf_token %}
+            <h1 class="card-title text-center">Registro</h1>
+
+            {% if messages %}
+                {% for message in messages %}
+                    {% if message.tags == 'success' %}
+                    <div class="alert alert-success">
+                        <p>{{ message }}</p>
+                    </div>
+                    {% elif message.tags == 'error' %}
+                    <div class="alert alert-danger">
+                        <p>{{ message }}</p>
+                    </div>
+                    {% else %}
+                    <div class="alert alert-info">
+                        <p>{{ message }}</p>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+
+            <div class="form-group mt-3">
+                {{ form.as_p }}
+            </div>
+
+            <button type="submit" class="btn btn-secondary w-100 mt-3">Registrar</button>
+        </form>
+        <p class="text-center mt-3">¿Ya tienes una cuenta? <a href="{% url 'login' %}">Inicia sesión aquí</a></p>
     </div>
-</form>
+</div>
 {% endblock %}

@@ -28,7 +28,7 @@
         />
         <button class="btn btn-outline-success" type="submit">Buscar</button>
       </form>
-      <a href="{% url 'carro' %}" class="btn btn-success ms-5"
+      <a href="{% url 'carro' %}" class="btn btn-success ms-4"
         ><i class="fa-solid fa-cart-shopping"></i>
       </a>
       {% if not user_id %}
@@ -127,7 +127,7 @@
                         <p class="card-title mb-0 text-success">Valor: {{ i.precio_unitario|floatformat:0 }}</p>
                         <p class="card-title mb-0">Stock: {{ i.stock }}</p>
                     </div>
-                    <!-- AGREGAR AL CARRO -->
+                    
                     <div class="mx-2 py-2">
                         <form method="POST" action="{% url 'addCarro' i.id %}">
                             {% csrf_token %}

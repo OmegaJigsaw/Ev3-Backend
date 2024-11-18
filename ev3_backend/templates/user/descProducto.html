@@ -24,10 +24,9 @@
     {% endif %}
 </div>
 
-<div class="container d-flex justify-content-center py-5"> <!-- Cambio: Añadir contenedor con centrado -->
-    <div class="row w-100 align-items-center justify-content-center"> <!-- Cambio: Añadir w-100 para asegurarse que la fila ocupa todo el espacio disponible -->
+<div class="container d-flex justify-content-center py-5">
+    <div class="row w-100 align-items-center justify-content-center">
         
-        <!-- Mensajes de alerta -->
         {% if messages %}
             {% for message in messages %}
                 {% if message.tags == 'success' %}
@@ -42,7 +41,6 @@
             {% endfor %}
         {% endif %}
 
-        <!-- Tarjeta del producto -->
         <div class="col-12 col-md-8 mb-4">
             <div class="card p-4 mb-4 mx-4 shadow-lg" style="border-radius: 15px;">
                 <div class="row">
@@ -60,7 +58,6 @@
                             <p class="card-text text-success" style="font-size: 1.5rem;">Valor: ${{ producto.precio_unitario|floatformat:0 }}</p>
                             <p class="card-text" style="font-size: 1.2rem;">Stock disponible: {{ producto.stock }}</p>
 
-                            <!-- Formulario para añadir al carrito -->
                             <form method="POST" action="{% url 'addCarro' producto.id %}">
                                 {% csrf_token %}
                                 <div class="d-flex justify-content-start align-items-center">
